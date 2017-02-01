@@ -74,7 +74,8 @@ int main() {
 	return 0;
 }
 
-// Dynamic (Bottom-up) O(n^2) returns minimum coins required to make change. [1] [2]
+/* Dynamic (Bottom-up) O(n^2) returns minimum coins required to make change
+   and updates index[] for determining frequency of coins used in solution. [1][2]*/
 int makeChange_3(int amount, int denoms[], int size, int minCoins[], int index[]) {
 	minCoins[0] = 0;
 	for (int j = 1; j <= amount; j++) {
