@@ -1,6 +1,6 @@
 /* Working algorithm 3 "changedp".
-Compile: g++ altCM.cpp -o alt -g -Wall
-"valgrind --leak-check-full alt" checks good!
+* Compile: g++ altCM.cpp -o alt -g -Wall
+* "valgrind --leak-check-full alt" checks good!
 */
 #include <iostream>
 using std::cout;
@@ -49,7 +49,7 @@ int main() {
 	}
 
 	// Output header line.
-	cout << "Algorithm changedp:\n";
+	cout << "Algorithm changedp: \n";
 	// Output denominations array.
 	for (int i = 0; i < size; i++) {
 		cout << denoms[i] << " ";
