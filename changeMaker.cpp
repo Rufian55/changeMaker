@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
 
 	string outputFile = argv[1];
 	// Chop off ".txt" from argv[1] input string.
-	outputFile.erase(outputFile.end() - 4);	
+	outputFile.erase(outputFile.length() - 4);	
 	outputFile = outputFile + "change.txt";
 
 	// Since we will have multiple write/append calls, we delete the old
