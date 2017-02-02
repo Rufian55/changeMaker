@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
 	// Open output file for writing data
 	std::ofstream outputFile;
 	filename += "change.txt";
-	outputFile.open(filename.c_str());
+	outputFile.open(filename.c_str(), std::ios_base::app);
 	outputFile << "Algorithm changeslow:" << endl;
 
 	std::string eachLine;
