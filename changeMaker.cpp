@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
 	inputFile.close();
 
 	string outputFile = argv[1];
-	// Chop off ".txt" from argv[1] input string.
+	// Chop off ".txt" from argv[1] input string. [y]
 	outputFile.erase(outputFile.length() - 4);	
 	outputFile = outputFile + "change.txt";
 
@@ -113,6 +113,8 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 		}
 
 		// TIME FROM HERE...
+		auto start = std::chrono::high_resolution_clock::now();
+
 		minCoins.push_back(0);
 		for (int j = 1; j <= amount; j++) {
 			minCoins.push_back(INT_MAX);
@@ -124,6 +126,15 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 			}
 		}
 		// ...TO HERE
+		auto end = std::chrono::high_resolution_clock::now();
+		// ... TO HERE (line above).
+
+		std::chrono::duration<double> execTime = end - start;
+
+		if (showTime) {
+			cout << std::fixed << std::setprecision(10) << "Elapsed time for algo_3 makechangdp, lineNum: "
+				<< lineNum + 1 << " = " << execTime.count() << '\n';
+		}
 
 		// Build the 2D localResults vector.
 		// Determine all coins used to make solution.
@@ -209,5 +220,6 @@ void append2file(vector<vector<int> > &results, int z, string outputFile) {
 [2] http://en.cppreference.com/w/cpp/chrono/high_resolution_clock/now
 [3] http://stackoverflow.com/questions/17663186/initializing-a-two-dimensional-stdvector
 [x] http://stackoverflow.com/questions/25778263/deleting-files-with-file-name
+[y] https://bytes.com/topic/c/answers/937279-delete-last-4-characters-given-string
 
 */
