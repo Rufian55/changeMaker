@@ -16,8 +16,9 @@
 
 int main(int argc, char** argv) {
 	if (argc < 2 || argc > 4 || atoi(argv[1]) < 0 || atoi(argv[1]) > 1) {
-		cout << "Usage: \"makeChange [input_file_name] 0\" or \"makeChange [input_file_name] 1\"\n" <<
-			"0 for do not show execution times, 1 to show the exection times.\n";
+		cout << "Usage: \"makeChange [input_file_name] 0\" or \"makeChange "
+			<< "[input_file_name] 1\"\n" 
+			<< "0 for do not show execution times, 1 to show the exection times.\n";
 		exit(1);
 	}
 	int showTime = 0;
