@@ -61,13 +61,6 @@ int main(int argc, char** argv) {
     }
     outputFile = outputFile + "change.txt";
 
-	// Since we will have multiple write/append calls, we delete the old
-	// inputFilechange.txt file first to ensure a "clean start".
-	if (fileExists(outputFile)) {
-		if (remove(outputFile.c_str()) != 0) { //[x]
-			perror("Error deleting old inputFilechange.txt: ");
-		}
-	}
 
     //Call GreedyAlgorithm2
     greedyAlgorithm2(allData, results, showTime, outputFile);
