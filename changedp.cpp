@@ -1,4 +1,4 @@
-﻿ /******************************************************************************
+﻿/******************************************************************************
 * cs325-400-W17	Analysis of Algorithms	05 Feb 2017	Project 2
 * Jonathan Horton	hortonjo@oregonstate.edu
 * Chris Kearns		kearnsc@oregonstate.edu
