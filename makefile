@@ -18,7 +18,7 @@ CXXFLAGS += -g
 ####################
 
 # SRCS is a standard name for the source files (.cpp). 
-SRC1 = changeMaker.cpp
+SRC1 = changeDP.cpp
 #SRC2 = 
 #SRC3 = 
 #SRC4 = 
@@ -29,7 +29,7 @@ SRC1 = changeMaker.cpp
 SRCS = ${SRC1}
 
 # HEADERS is a standard name for the header files (.hpp). 
-HEADER1 = changeMaker.hpp
+HEADER1 = changeDP.hpp
 #HEADER2 = 
 #HEADER3 = 
 #HEADER4 = 

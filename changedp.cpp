@@ -4,17 +4,15 @@
 * Chris Kearns		kearnsc@oregonstate.edu
 * Dustin Pack		packdu@oregonstate.edu
 *
-* Program changeMaker.cpp reads a text file of space delimited ints that include
-* the coin denominations available, sorted ascending, and a requested change 
-* amount. The program processes the data and appends the results to a seperate
-* text file named inputFilechange.txt.
-* Compile with: g++ changeMaker.cpp -o makeChange -g -Wall -std=c++11
-* Call from CLI: "changeMaker inputFile.txt 1" to show with execution times,
-* "changeMaker inputFile.text 0" otherwise.
-* NOTE: Program will emit a warning if change requested > 30 due to excessively
-* long processing times for the changeslow algorithm.
+* Program changeMaker.cpp reads an inputFile.txt file of space delimited ints
+* that include the coin denominations available, sorted ascending, and a
+* requested change amount. The program processes the data and appends the
+* results to a seperate text file named inputFilechange.txt.
+* Call from CLI: "makeChange inputFile.txt 1" to show with execution times,
+*			  "makeChange inputFile.txt 0" otherwise.
+* See makefile for compilation.
 ******************************************************************************/
-#include "changeMaker.hpp"
+#include "changeDP.hpp"
 
 int main(int argc, char** argv) {
 	if (argc < 2 || argc > 4 || atoi(argv[1]) < 0 || atoi(argv[1]) > 1) {
@@ -51,23 +49,19 @@ int main(int argc, char** argv) {
 	inputFile.close();
 
 	string outputFile = argv[1];
-	// Chop off ".txt" from argv[1] input string. [y]
-	outputFile.erase(outputFile.length() - 4);	
+	// Chop off ".txt" from argv[1] input string if .txt [1][2]
+	if (outputFile.substr(outputFile.length() - 4, outputFile.length()) == ".txt") {
+		outputFile.erase(outputFile.length() - 4);
+	}
 	outputFile = outputFile + "change.txt";
 
 	// Since we will have multiple write/append calls, we delete the old
 	// inputFilechange.txt file first to ensure a "clean start".
 	if (fileExists(outputFile)) {
-		if (remove(outputFile.c_str()) != 0) { //[x]
+		if (remove(outputFile.c_str()) != 0) { //[3]
 			perror("Error deleting old inputFilechange.txt: ");
 		}
 	}
-
-	// Algorithm 1 changeslow CALL GOES HERE.
-	// last line of your algo must be 	append2file(results, 1, outputFile);
-
-	// Algorithm 2 changegreedy CALL GOES HERE.
-	// last line of your algo must be 	append2file(results, 2, outputFile);
 
 	// Algorithm 3 changedp.
 	makeChange_3(allData, results, showTime, outputFile);
@@ -78,7 +72,7 @@ int main(int argc, char** argv) {
 
 /* Dynamic (Bottom-up) O(n^2) returns original denominations available, minimum coins
    required to make change and vector index for determining frequency of coins used in
-   solution. [1][2] */
+   solution. [4][5] (Section 8.2.2) */
 void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, int showTime, string outputFile) {
 	vector<int> denoms;			// Denominations of coins available.
 	int amount;				// Amount of change to be given.
@@ -87,7 +81,7 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 	vector<int> localResults;	// Results array of all coins used for solution (repetitive).
 	vector<int> elem;			// Coins used by frequency array.
 							
-	results.clear();			// Clear 2D results vector (passed by ref, so old 1D vectors still hanging around).
+	results.clear();			// Clear 2D results vector.
 
 	// Process allData vector.
 	for (unsigned int lineNum = 0; lineNum < allData.size(); lineNum += 2) {
@@ -99,9 +93,9 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 
 		denoms = allData[lineNum];
 		amount = allData[lineNum + 1][0];
-		int size = denoms.size();// +1;
+		int size = denoms.size();
 
-		// Initialize elem and loaclResults vectors for use in the makechagedp algorithm.
+		// Initialize elem and localResults vectors for use in the makechangedp algorithm.
 		for (int i = 0; i < size; i++) {
 			elem.push_back(0);
 			localResults.push_back(0);
@@ -125,7 +119,7 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 				}
 			}
 		}
-		// ...TO HERE
+
 		auto end = std::chrono::high_resolution_clock::now();
 		// ... TO HERE (line above).
 
@@ -137,11 +131,11 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 		}
 
 		// Build the 2D localResults vector.
-		// Determine all coins used to make solution.
+		// Determine all coins used to make solution. [5] (Figure 8.2.2)
 		int k = amount;
 		int i = size;
 		while (k) {
-			localResults[i] = denoms[index[k]];
+			localResults[i-1] = denoms[index[k]];
 			k -= denoms[index[k]];
 			i--;
 		}
@@ -156,11 +150,11 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 		}
 
 		// Build the final results vector.
-		results.push_back(denoms); // The denominations (originally allData[lineNum]. 
-		results.push_back(elem);
-		vector<int> solution;
+		results.push_back(denoms);			// The denominations (originally allData[lineNum]). 
+		results.push_back(elem);				// The frequency of occurence.
+		vector<int> solution;		
 		solution.push_back(minCoins[amount]);
-		results.push_back(solution);
+		results.push_back(solution);			// Minimum coins.
 	}
 	append2file(results, 3, outputFile);
 }
@@ -178,7 +172,7 @@ void append2file(vector<vector<int> > &results, int z, string outputFile) {
 
 	string algoName[3] = { "changeslow:", "changegreedy:", "changedp:" };
 
-	// Open the results file for appending.	[6]
+	// Open the results file for appending.
 	std::ofstream resultFile(outputFile, std::ios_base::app);
 
 	// Append "Algorithm: algoName[]" to resultFile.
@@ -216,10 +210,9 @@ void append2file(vector<vector<int> > &results, int z, string outputFile) {
 
 
 /* CITATIONS: Code adapted from the following sources:
-[1] http://condor.depaul.edu/rjohnson/algorithm/coins.pdf
-[2] http://en.cppreference.com/w/cpp/chrono/high_resolution_clock/now
-[3] http://stackoverflow.com/questions/17663186/initializing-a-two-dimensional-stdvector
-[x] http://stackoverflow.com/questions/25778263/deleting-files-with-file-name
-[y] https://bytes.com/topic/c/answers/937279-delete-last-4-characters-given-string
-
+[1] https://bytes.com/topic/c/answers/937279-delete-last-4-characters-given-string
+[2] http://www.cplusplus.com/reference/string/string/at/
+[3] http://stackoverflow.com/questions/25778263/deleting-files-with-file-name
+[4] http://condor.depaul.edu/rjohnson/algorithm/coins.pdf
+[5] http://en.cppreference.com/w/cpp/chrono/high_resolution_clock/now
 */

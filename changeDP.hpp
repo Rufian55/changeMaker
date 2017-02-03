@@ -5,8 +5,9 @@
 * Dustin Pack		packdu@oregonstate.edu
 *
 * Program changeMaker.hpp is the header file for changeMaker.cpp
-* Call from CLI: "makeChange 1" to show with execution times, "makeChange 0"
-otherwise.  See makefile for compilation.
+* Call from CLI: "makeChange inputFile.txt 1" to show with execution times,
+*			  "makeChange inputFile.txt 0" otherwise.
+* See makefile for compilation.
 ******************************************************************************/
 #include <vector>
 using std::vector;
