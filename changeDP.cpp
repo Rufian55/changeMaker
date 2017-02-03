@@ -58,12 +58,13 @@ int main(int argc, char** argv) {
 
 	// Since we will have multiple write/append calls, we delete the old
 	// inputFilechange.txt file first to ensure a "clean start".
-	if (fileExists(outputFile)) {
+	// Comment out if other programs are also appending to inputFilechange.txt
+/*	if (fileExists(outputFile)) {
 		if (remove(outputFile.c_str()) != 0) { //[3]
 			perror("Error deleting old inputFilechange.txt: ");
 		}
 	}
-
+*/
 	// Algorithm 3 changedp.
 	makeChange_3(allData, results, showTime, outputFile);
 
