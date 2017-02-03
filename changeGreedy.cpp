@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
 	vector<std::vector<int> > allData;	// 2D input vector.
 	vector<std::vector<int> > results;	// 2d results vector.
 	string eachLine;
-	int eachInt;
+	unsigned int eachInt;
 
 	// Input the text file of ints to allData.
     
@@ -54,10 +54,12 @@ int main(int argc, char** argv) {
 	}
 	inputFile.close();
     
-	string outputFile = argv[1];
-	// Chop off ".txt" from argv[1] input string. [y]
-	outputFile.erase(outputFile.length() - 4);	
-	outputFile = outputFile + "change.txt";
+    string outputFile = argv[1];
+    // Chop off ".txt" from argv[1] input string if .txt [1][2]
+    if (outputFile.substr(outputFile.length() - 4, outputFile.length()) == ".txt") {
+        outputFile.erase(outputFile.length() - 4);
+    }
+    outputFile = outputFile + "change.txt";
 
 	// Since we will have multiple write/append calls, we delete the old
 	// inputFilechange.txt file first to ensure a "clean start".
@@ -97,10 +99,10 @@ void greedyAlgorithm2(vector<vector<int> > &allData, vector<vector<int> > &resul
     results = allData;
     
     //Create a second vector the same length as the first to hold 0 values.  This is ued to hold the coin count of each coin denomination
-    for (int i = 0; i < results.size(); i++) {
+    for (unsigned int i = 0; i < results.size(); i++) {
         if (i % 2) {
             results[i][0] = 0;
-            for (int j = 1; j < results[i-1].size(); j++) {
+            for (unsigned int j = 1; j < results[i-1].size(); j++) {
                 results[i].push_back (0);
             }
         }
@@ -110,25 +112,24 @@ void greedyAlgorithm2(vector<vector<int> > &allData, vector<vector<int> > &resul
     std::vector<int> tempVector;
     tempVector.push_back(0);
     
-    for (int i = 2; i < results.size()+1; i+= 3) {
+    for (unsigned int i = 2; i < results.size()+1; i+= 3) {
         results.insert(results.begin()+i, tempVector);
     }
     
     //Insert an index into tempAllData so it aligns with the results vector
-    for (int i = 2; i < allData.size()+1; i+= 3) {
+    for (unsigned int i = 2; i < allData.size()+1; i+= 3) {
         tempAllData.insert(tempAllData.begin()+i, tempVector);
     }
     //END SETUP OF RESULTS VECTOR
 
     //BEGIN GREEDY ALGORITHM
-    for (int i = 0; i < results.size(); i+=3){
+    for (unsigned int i = 0; i < results.size(); i+=3){
         // TIME FROM HERE...
         auto start = std::chrono::high_resolution_clock::now();
         
         
         //Iterate through the coin denominations
         for (int j = results[i].size()-1; j >= 0; j--) {
-            //cout << results[i][j] << " ";
             if (results[i][j] <= tempAllData[i+1][0]) {
                 results[i+1][j] = tempAllData[i+1][0]/results[i][j];  //posting the number of a particular coin to the results vector
                 tempAllData[i+1][0] = tempAllData[i+1][0] - (results[i+1][j] * results[i][j]);   //Reduce target num by the number of coins * the value of the coin
