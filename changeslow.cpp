@@ -32,13 +32,16 @@ int main(int argc, char** argv) {
 	// Check for proper usage
 	if (argc < 2) {
 		cout << "USAGE: " << argv[0] << " [inputFile].txt" << endl;
-		cout << "(note that the txt is not needed)" << endl;
 		return 0;
 	}
 
-	// Open the file and start importing data
-	std::ifstream inputFile;
+	// Make sure the filename given is in the right form, chopping off .txt
 	std::string filename = argv[1];
+	if (filename.substr ( filename.length() - 4, filename.length() ) == ".txt")
+		filename.erase(filename.length() - 4);
+
+	// Open file for input
+	std::ifstream inputFile;
 	std::string inFilename = filename + ".txt";
 	inputFile.open(inFilename.c_str());
 
@@ -96,13 +99,13 @@ int main(int argc, char** argv) {
 		// Output data! (goes to screen and file appropriately)
 		int numCoins = 0;
 		cout << "Coin listing:" << endl;
-		for (int count = 0; count < V.size(); count++) {
+		for (unsigned int count = 0; count < V.size(); count++) {
 			cout << V[count] << " ";
 			outputFile << V[count] << " ";
 		}
 		cout << endl;
 		outputFile << endl;
-		for (int count = 0; count < coins.size(); count++) {
+		for (unsigned int count = 0; count < coins.size(); count++) {
 			cout << coins[count] << " ";
 			outputFile << coins[count] << " ";
 			numCoins += coins[count];
@@ -133,7 +136,7 @@ vector<int> AlGore1(vector<int> &V, int K) {
 	vector<int> coins(V.size(), 0); // we will later return this vector
 
 	// If there is a K-cent coin, then that one coin is the minimum.
-	for (int count = 0; count < V.size(); count++) {
+	for (unsigned int count = 0; count < V.size(); count++) {
 		if (V[count] == K) {
 			coins[count]++;
 			return coins;
@@ -160,7 +163,7 @@ vector<int> AlGore1(vector<int> &V, int K) {
 
 		// Find the subsets that return the minimum number of coins
 		int numCoins = 0;
-		for (int count = 0; count < coins.size(); count++) {
+		for (unsigned int count = 0; count < coins.size(); count++) {
 			numCoins += tempCoins1[count] + tempCoins2[count];
 		}
 		if (numCoins < minCoins) {	
@@ -178,7 +181,7 @@ vector<int> AlGore1(vector<int> &V, int K) {
 	}
 
 	// Reassemble our listing of saved coin amounts to return
-	for (int count = 0; count < coins.size(); count++) {
+	for (unsigned int count = 0; count < coins.size(); count++) {
 		coins[count] += savedCoins1[count] + savedCoins2[count];
 	}
 
