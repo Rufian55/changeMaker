@@ -79,8 +79,7 @@ int main(int argc, char** argv) {
 		 * section if you want to try larger numbers.
 		 *********************************************************************/
 		if (A > 30) {
-			cout << "WARNING: Amounts > 30 can take a LONG time to process." << endl;
-			cout << "Target amount reduced from " << A << " to 30." << endl;
+			cout << "WARNING: Target amount reduced from " << A << " to 30 for speed." << endl;
 			A = 30;
 		}
 	
@@ -94,11 +93,11 @@ int main(int argc, char** argv) {
 		vector<int> coins = AlGore1(V, A); 
 		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
-		cout << "Duration: " << duration << endl;
+		cout << "Duration: " << duration << " seconds" << endl;
 
 		// Output data! (goes to screen and file appropriately)
 		int numCoins = 0;
-		cout << "Coin listing:" << endl;
+		//cout << "Coin listing:" << endl;
 		for (unsigned int count = 0; count < V.size(); count++) {
 			cout << V[count] << " ";
 			outputFile << V[count] << " ";
