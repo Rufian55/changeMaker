@@ -7,6 +7,9 @@
  * given coin denominations and a target amount to find
  * in alternating lines. It's a slow, inefficient
  * algorithm that will struggle to find amounts > 30.
+ *
+ * To show full output, put "-verbose" after the file
+ * name in the call to the program.
  *******************************************************/
 
 #include <iostream>
@@ -31,7 +34,7 @@ int main(int argc, char** argv) {
 	
 	// Check for proper usage
 	if (argc < 2) {
-		cout << "USAGE: " << argv[0] << " [inputFile].txt" << endl;
+		cout << "USAGE: " << argv[0] << " [inputFile].txt [-verbose]" << endl;
 		return 0;
 	}
 
@@ -50,6 +53,12 @@ int main(int argc, char** argv) {
 		cout << "Cannot open file " << inFilename << endl;
 		return 0;
 	}
+
+	// Turning on optional output to the screen
+	int verbose = 0;
+	if (argc > 2)
+		if (std::string(argv[2]).substr(0,2) == "-v")
+			verbose = 1;
 
 	// Open output file for writing data
 	std::ofstream outputFile;
@@ -93,25 +102,25 @@ int main(int argc, char** argv) {
 		vector<int> coins = AlGore1(V, A); 
 		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
-		cout << "Duration: " << duration << " seconds" << endl;
+		if (verbose) { cout << "Duration: " << duration << " seconds" << endl; }
 
 		// Output data! (goes to screen and file appropriately)
 		int numCoins = 0;
-		//cout << "Coin listing:" << endl;
+		if (verbose) { cout << "Coin listing:" << endl; }
 		for (unsigned int count = 0; count < V.size(); count++) {
-			cout << V[count] << " ";
+			if (verbose) { cout << V[count] << " "; }
 			outputFile << V[count] << " ";
 		}
-		cout << endl;
+		if (verbose) { cout << endl; }
 		outputFile << endl;
 		for (unsigned int count = 0; count < coins.size(); count++) {
-			cout << coins[count] << " ";
+			if (verbose) { cout << coins[count] << " "; }
 			outputFile << coins[count] << " ";
 			numCoins += coins[count];
 		}
-		cout << endl;
+		if (verbose) { cout << endl; }
 		outputFile << endl;
-		cout << numCoins << endl;
+		if (verbose) { cout << numCoins << endl; }
 		outputFile << numCoins << endl;
 	}
 
