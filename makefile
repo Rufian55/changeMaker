@@ -12,7 +12,7 @@ CXXFLAGS = -std=c++0x
 CXXFLAGS += -Wall
 CXXFLAGS += -g
 
-# Place a "#" in front of the line in defulat section that you wish to omit.
+# Place a "#" in front of the line in default section that you wish to omit.
 
 default:
 #	${CXX} ${CXXFLAGS} changeslow.cpp -o changeslow
@@ -24,7 +24,7 @@ all: changeslow.cpp changeGreedy.hpp changeGreedy.cpp changeDP.hpp changeDP.cpp
 	${CXX} ${CXXFLAGS} changeGreedy.hpp changeGreedy.cpp -o changegreedy
 	${CXX} ${CXXFLAGS} changeDP.hpp changeDP.cpp -o changedp
 
-run: changeslow changegreedy changedp
+run: changeslow changegreedy changedp Amount.txt
 	changeslow Amount.txt
 	changegreedy Amount.txt
 	changedp Amount.txt
