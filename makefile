@@ -24,10 +24,10 @@ all: changeslow.cpp changeGreedy.hpp changeGreedy.cpp changeDP.hpp changeDP.cpp
 	${CXX} ${CXXFLAGS} changeGreedy.hpp changeGreedy.cpp -o changegreedy
 	${CXX} ${CXXFLAGS} changeDP.hpp changeDP.cpp -o changedp
 
-run:
+run: changeslow changegreedy changedp
 	changeslow Amount.txt
 	changegreedy Amount.txt
 	changedp Amount.txt
 
 clean:
-	rm -f changeslow changegreedy changedp *.o *~
+	rm -f changeslow changegreedy changedp Amountchange.txt *.o *~
