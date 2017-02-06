@@ -75,14 +75,14 @@ int main(int argc, char** argv) {
 /* Dynamic (Bottom-up) O(n^2) returns original denominations available, minimum coins
    required to make change and vector index for determining frequency of coins used in
    solution. [4][5] (Section 8.2.2) */
-void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, int showTime, string outputFile) {
+void makeChange_3(vector<vector<int> > allData, vector<vector<int> > &results, int showTime, string outputFile) {
 	vector<int> denoms;			// Denominations of coins available.
 	int amount;				// Amount of change to be given.
 	vector<int> minCoins;		// Table of minumum coins solutions.
 	vector<int> index;			// Table of indexes of coins used. 
 	vector<int> localResults;	// Results array of all coins used for solution (repetitive).
 	vector<int> elem;			// Coins used by frequency array.
-
+							
 	results.clear();			// Clear 2D results vector.
 
 	// Process allData vector.
@@ -133,14 +133,33 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 		}
 
 		// Build the 2D localResults vector.
-		// Determine all coins used to make solution. [5] (Figure 8.2.2)
+		// Determine all coins used to make solution. [4] (Figure 8.2.2)
 		int k = amount;
 		int i = size;
 		while (k) {
-			localResults[i - 1] = denoms[index[k]];
+			localResults[i-1] = denoms[index[k]];
 			k -= denoms[index[k]];
 			i--;
+			if(i < 1) break;
+//			cout << "i = " << i << "\n";
 		}
+
+/*		cout << "localResults = ";
+		// print localResults
+		for (int i = 0; i < localResults.size(); i++) {
+			cout << localResults[i] << " ";
+		}
+		cout << "\n";
+*/
+
+
+
+//		while (k) {
+//			localResults.push_back(denoms[index[k]]);
+//			k = k - denoms[index[k]];
+//		}
+
+
 
 		// Compare denoms[] to localResults[] and populate elem[] if match.
 		for (int i = 0; i < size; i++) {
@@ -152,15 +171,14 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 		}
 
 		// Build the final results vector.
-		results.push_back(denoms);			// The denominations (originally allData[lineNum]).
+		results.push_back(denoms);			// The denominations (originally allData[lineNum]). 
 		results.push_back(elem);				// The frequency of occurence.
-		vector<int> solution;
+//		results.push_back(index);
+		vector<int> solution;		
 		solution.push_back(minCoins[amount]);
 		results.push_back(solution);			// Minimum coins.
-
-		append2file(results, 3, outputFile);
-
 	}
+	append2file(results, 3, outputFile);
 }
 
 
