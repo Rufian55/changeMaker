@@ -122,6 +122,13 @@ void makeChange_3(vector<vector<int> > allData, vector<vector<int> > &results, i
 				<< lineNum + 1 << " = " << execTime.count() << '\n';
 		}
 
+		if (CAPTURE_TIME == 1) {
+			// Append timing data to timer.txt.
+			std::ofstream timeFile("timer.txt", std::ios_base::app);
+			timeFile << std::fixed << std::setprecision(10) << execTime.count() << '\n';
+			timeFile.close();
+		}
+
 		// Build the 2D localResults vector.
 		// Determine all coins used to make solution. [4] (Figure 8.2.2)
 		int k = amount;

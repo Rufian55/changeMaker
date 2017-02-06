@@ -23,10 +23,13 @@ using std::cout;
 #include <cstdlib>
 #include <climits>
 #include <numeric>
+#include <algorithm>
+using std::min;
 
 #define OK_2_DISPLAY_2_STDOUT 0
+#define CAPTURE_TIME 0
 
 // Prototypes.
-void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, int showTime, string outputFile);
+void makeChange_3(vector<vector<int> > allData, vector<vector<int> > &results, int showTime, string outputFile);
 bool fileExists(string fileName);
 void append2file(vector<vector<int> > &results, int z, string outputFile);
