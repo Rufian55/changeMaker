@@ -16,7 +16,7 @@
 
 int main(int argc, char** argv) {
 	if (argc < 2 || argc > 4 || atoi(argv[1]) < 0 || atoi(argv[1]) > 1) {
-		cout << "Usage: \"makeChange [input_file_name] 0\" or \"makeChange "
+		cout << "Usage: \"changedp [input_file_name] 0\" or \"changedp "
 			<< "[input_file_name] 1\"\n" 
 			<< "0 for do not show execution times, 1 to show the exection times.\n";
 		exit(1);
@@ -56,15 +56,6 @@ int main(int argc, char** argv) {
 	}
 	outputFile = outputFile + "change.txt";
 
-	// Since we will have multiple write/append calls, we delete the old
-	// inputFilechange.txt file first to ensure a "clean start".
-	// Comment out if other programs are also appending to inputFilechange.txt
-/*	if (fileExists(outputFile)) {
-		if (remove(outputFile.c_str()) != 0) { //[3]
-			perror("Error deleting old inputFilechange.txt: ");
-		}
-	}
-*/
 	// Algorithm 3 changedp.
 	makeChange_3(allData, results, showTime, outputFile);
 
@@ -72,9 +63,9 @@ int main(int argc, char** argv) {
 }
 
 
-/* Dynamic (Bottom-up) O(n^2) returns original denominations available, minimum coins
+/* Dynamic (Bottom-up) O(nm) returns original denominations available, minimum coins
    required to make change and vector index for determining frequency of coins used in
-   solution. [4][5] (Section 8.2.2) */
+   solution. [3][4] (Section 8.2.2) */
 void makeChange_3(vector<vector<int> > allData, vector<vector<int> > &results, int showTime, string outputFile) {
 	vector<int> denoms;			// Denominations of coins available.
 	int amount;				// Amount of change to be given.
@@ -97,12 +88,6 @@ void makeChange_3(vector<vector<int> > allData, vector<vector<int> > &results, i
 		amount = allData[lineNum + 1][0];
 		int size = denoms.size();
 
-		// Initialize elem and localResults vectors for use in the makechangedp algorithm.
-		for (int i = 0; i < size; i++) {
-			elem.push_back(0);
-			localResults.push_back(0);
-		}
-
 		// Initialize index vectors for use in the makechangedp algorithm.
 		for (int i = 0; i < allData[lineNum + 1][0] + 1; i++) {
 			index.push_back(0);
@@ -122,48 +107,32 @@ void makeChange_3(vector<vector<int> > allData, vector<vector<int> > &results, i
 			}
 		}
 
+		// Initialize localResults vectors for use in the makechangedp algorithm.
+		for (int i = 0; i < size; i++) {
+			elem.push_back(0);
+		}
+
 		auto end = std::chrono::high_resolution_clock::now();
 		// ... TO HERE (line above).
 
 		std::chrono::duration<double> execTime = end - start;
 
 		if (showTime) {
-			cout << std::fixed << std::setprecision(10) << "Elapsed time for algo_3 makechangdp, lineNum: "
+			cout << std::fixed << std::setprecision(10) << "Elapsed time for algo_3 changedp, lineNum: "
 				<< lineNum + 1 << " = " << execTime.count() << '\n';
 		}
 
 		// Build the 2D localResults vector.
 		// Determine all coins used to make solution. [4] (Figure 8.2.2)
 		int k = amount;
-		int i = size;
 		while (k) {
-			localResults[i-1] = denoms[index[k]];
+			localResults.push_back(denoms[index[k]]);
 			k -= denoms[index[k]];
-			i--;
-			if(i < 1) break;
-//			cout << "i = " << i << "\n";
 		}
-
-/*		cout << "localResults = ";
-		// print localResults
-		for (int i = 0; i < localResults.size(); i++) {
-			cout << localResults[i] << " ";
-		}
-		cout << "\n";
-*/
-
-
-
-//		while (k) {
-//			localResults.push_back(denoms[index[k]]);
-//			k = k - denoms[index[k]];
-//		}
-
-
 
 		// Compare denoms[] to localResults[] and populate elem[] if match.
 		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
+			for (unsigned int j = 0; j < localResults.size(); j++) {
 				if (denoms[i] == localResults[j]) {
 					elem[i]++;
 				}
@@ -173,7 +142,6 @@ void makeChange_3(vector<vector<int> > allData, vector<vector<int> > &results, i
 		// Build the final results vector.
 		results.push_back(denoms);			// The denominations (originally allData[lineNum]). 
 		results.push_back(elem);				// The frequency of occurence.
-//		results.push_back(index);
 		vector<int> solution;		
 		solution.push_back(minCoins[amount]);
 		results.push_back(solution);			// Minimum coins.
@@ -234,7 +202,6 @@ void append2file(vector<vector<int> > &results, int z, string outputFile) {
 /* CITATIONS: Code adapted from the following sources:
 [1] https://bytes.com/topic/c/answers/937279-delete-last-4-characters-given-string
 [2] http://www.cplusplus.com/reference/string/string/at/
-[3] http://stackoverflow.com/questions/25778263/deleting-files-with-file-name
-[4] http://condor.depaul.edu/rjohnson/algorithm/coins.pdf
-[5] http://en.cppreference.com/w/cpp/chrono/high_resolution_clock/now
+[3] http://condor.depaul.edu/rjohnson/algorithm/coins.pdf
+[4] http://www.bogotobogo.com/Algorithms/dynamic_programming.php
 */
