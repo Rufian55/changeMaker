@@ -82,7 +82,7 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 	vector<int> index;			// Table of indexes of coins used. 
 	vector<int> localResults;	// Results array of all coins used for solution (repetitive).
 	vector<int> elem;			// Coins used by frequency array.
-							
+
 	results.clear();			// Clear 2D results vector.
 
 	// Process allData vector.
@@ -137,7 +137,7 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 		int k = amount;
 		int i = size;
 		while (k) {
-			localResults[i-1] = denoms[index[k]];
+			localResults[i - 1] = denoms[index[k]];
 			k -= denoms[index[k]];
 			i--;
 		}
@@ -152,13 +152,15 @@ void makeChange_3(vector<vector<int> > &allData, vector<vector<int> > &results, 
 		}
 
 		// Build the final results vector.
-		results.push_back(denoms);			// The denominations (originally allData[lineNum]). 
+		results.push_back(denoms);			// The denominations (originally allData[lineNum]).
 		results.push_back(elem);				// The frequency of occurence.
-		vector<int> solution;		
+		vector<int> solution;
 		solution.push_back(minCoins[amount]);
 		results.push_back(solution);			// Minimum coins.
+
+		append2file(results, 3, outputFile);
+
 	}
-	append2file(results, 3, outputFile);
 }
 
 
