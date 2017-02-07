@@ -110,7 +110,7 @@ void greedyAlgorithm2(vector<vector<int> > &allData, vector<vector<int> > &resul
     }
     
     //Insert an index into tempAllData so it aligns with the results vector
-    for (unsigned int i = 2; i < tempAllData.size()+1; i+= 3) {
+    for (unsigned int i = 2; i < allData.size()+1; i+= 3) {
         tempAllData.insert(tempAllData.begin()+i, tempVector);
     }
     //END SETUP OF RESULTS VECTOR

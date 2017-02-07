@@ -15,8 +15,8 @@ CXXFLAGS += -g
 # Place a "#" in front of the line in default section that you wish to omit.
 
 default:
-#	${CXX} ${CXXFLAGS} changeslow.cpp -o changeslow
-#	${CXX} ${CXXFLAGS} changeGreedy.hpp changeGreedy.cpp -o changegreedy
+	${CXX} ${CXXFLAGS} changeslow.cpp -o changeslow
+	${CXX} ${CXXFLAGS} changeGreedy.hpp changeGreedy.cpp -o changegreedy
 	${CXX} ${CXXFLAGS} changeDP.hpp changeDP.cpp -o changedp
 
 all: changeslow.cpp changeGreedy.hpp changeGreedy.cpp changeDP.hpp changeDP.cpp
